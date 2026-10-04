@@ -1,0 +1,16 @@
+services:
+  frontend:
+    build: .
+    init: true
+    restart: unless-stopped
+    environment:
+      API_BASE_URL: ${API_BASE_URL:-http://employee-review-backend:8000}
+    ports:
+      - "127.0.0.1:5173:3000"
+    networks:
+      - employee-review
+
+networks:
+  employee-review:
+    name: ${BACKEND_NETWORK:-employee-review-network}
+    external: true

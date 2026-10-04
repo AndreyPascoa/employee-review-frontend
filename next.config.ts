@@ -1,11 +1,17 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  async rewrites() {
+  output: process.env.BUILD_STANDALONE === "true" ? "standalone" : undefined,
+  poweredByHeader: false,
+  async headers() {
     return [
       {
-        source: "/api/:path*",
-        destination: "http://employee-review-backend:8000/api/:path*",
+        source: "/:path*",
+        headers: [
+          { key: "X-Content-Type-Options", value: "nosniff" },
+          { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+          { key: "X-Frame-Options", value: "DENY" },
+        ],
       },
     ];
   },
